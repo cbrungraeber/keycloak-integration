@@ -6,7 +6,7 @@ In order to start up the services (as deamon), please execute:
 docker-compose up -d --force-recreate --remove-orphans
 ```
 
-Afterwards, open the [Keycloak Administration Console](http://localhost:8000) in your browser.
+Afterwards, open the [Keycloak Administration Console](http://localhost:8080) in your browser.
 
 
 ## Keycloak
