@@ -1,0 +1,42 @@
+version: '2.3'
+
+services:
+
+  # Database container for the scanner queue.
+  # PostgreSQL is an open-source relational database management system
+  # emphasizing extensibility and standards compliance.
+  # https://www.postgresql.org/
+  postgres:
+    image: postgres:11.3
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: Engineering123
+      POSTGRES_DB: engineering
+    networks:
+      - engineering
+    mem_limit: 200m
+    restart: unless-stopped
+    stop_grace_period: 30s
+
+  # Keycloak
+  # Keycloak is an open source identity and access management solution.
+  # https://www.keycloak.org/
+  keycloak:
+    image: jboss/keycloak:6.0.1
+    networks:
+      - engineering
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_PORT: 5432
+      DB_DATABASE: engineering
+      DB_SCHEMA: public
+      DB_USER: admin
+      DB_PASSWORD: Engineering123
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: Engineering123
+    mem_limit: 1000m
+    restart: unless-stopped
+    stop_grace_period: 30s

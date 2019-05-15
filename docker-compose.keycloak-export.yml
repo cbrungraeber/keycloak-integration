@@ -1,0 +1,37 @@
+version: '2.3'
+
+services:
+  postgres:
+    extends:
+      file: services.yml
+      service: postgres
+
+  keycloak:
+    extends:
+      file: services.yml
+      service: keycloak
+    command:
+      - --admin-only
+    depends_on:
+      - postgres
+
+  export:
+    extends:
+      file: services.yml
+      service: keycloak
+    command:
+      - -Dkeycloak.migration.action=export
+      - -Dkeycloak.migration.provider=dir
+      - -Dkeycloak.migration.dir=/mnt
+      - -Dkeycloak.migration.realmName=engineering
+      - -Dkeycloak.migration.usersExportStrategy=REALM_FILE
+    volumes:
+      - ./keycloak/:/mnt/:rw
+    depends_on:
+      - postgres
+
+networks:
+  engineering:
+
+volumes:
+  pgdata:
